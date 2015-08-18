@@ -41,7 +41,7 @@ if (false === $result) {
 }
 $servers = json_decode($result);
 if (JSON_ERROR_NONE != json_last_error() || 
-  false == is_array($servers) ||) {
+  false == is_array($servers)) {
     syslog(LOG_ERR, 'remote returned invalid JSON for GET server list');
     exit(1);
 }
