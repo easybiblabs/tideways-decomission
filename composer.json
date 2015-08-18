@@ -1,0 +1,14 @@
+{
+    "name": "easybiblabs/tideways-decomission",
+    "description": "remove decomissioned or inactive servers from Tideways",
+    "authors": [
+        {
+            "name": "Flame Herbohn",
+            "email": "flame.herbohn@imagineeasy.com"
+        }
+    ],
+    "license": "BSD-2-Clause",
+    "require": {
+        "php": ">=5.3.3"
+    }
+}
