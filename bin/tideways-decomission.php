@@ -1,11 +1,24 @@
 #!/usr/bin/env php
 <?php
 
-$token        = '';
-$organization = '';
-$application  = '';
+$deployConfigFile = dirname(__DIR__) . '/.deploy_configuration.php';
+if (is_readable($deployConfigFile)) {
+  $deployConfig = require $deployConfigFile;
+} else {
+  exit(1);
+}
 
-$timeout      = 7;
+$token        = $deployConfig['TOKEN'];
+$organization = $deployConfig['ORGANIZATION'];
+$application  = $deployConfig['APPLICATION'];
+$timeout      = $deployConfig['TIMEOUT_DAYS'];
+
+if (empty($token) ||
+  empty($organization) ||
+  empty($application) ||
+  empty($timeout)) {
+    exit(1);
+}
 
 $apiUrl  = "https://app.tideways.io/apps/api/{$organization}/{$application}/servers";
 
