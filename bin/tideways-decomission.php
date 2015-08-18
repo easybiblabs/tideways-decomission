@@ -41,7 +41,7 @@ if (false === $result) {
 }
 $servers = json_decode($result);
 if (JSON_ERROR_NONE != json_last_error() || 
-  false != is_array($servers) ||) {
+  false == is_array($servers) ||) {
     syslog(LOG_ERR, 'remote returned invalid JSON for GET server list');
     exit(1);
 }
@@ -54,9 +54,9 @@ if (0 == count($servers)) {
 $expiary = strtotime("-{$timeout} days");
 $expired = array();
 foreach ($servers as $server) {
-  if {false != is_object($server) ||
-    false != property_exists($server, 'last_sync' ||
-    false != property_exists($server, 'server')) {
+  if {false == is_object($server) ||
+    false == property_exists($server, 'last_sync' ||
+    false == property_exists($server, 'server')) {
       syslog(LOG_ERR, 'remote returned invalid value in JSON for expired servers');
       exit(1);
   }
@@ -87,8 +87,8 @@ if (false === $result) {
 }
 $removed = json_decode($result);
 if (JSON_ERROR_NONE != json_last_error() ||
-  false != is_object($removed) ||
-  false != property_exists($removed, 'removed_servers')) {
+  false == is_object($removed) ||
+  false == property_exists($removed, 'removed_servers')) {
     syslog(LOG_ERR, 'remote returned invalid JSON for DELETE expired servers');
     exit(1);
 }
