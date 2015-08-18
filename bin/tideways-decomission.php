@@ -5,7 +5,7 @@ $deployConfigFile = dirname(__DIR__) . '/.deploy_configuration.php';
 if (is_readable($deployConfigFile)) {
   $deployConfig = require $deployConfigFile;
 } else {
-  error_log('missing config file');
+  syslog(LOG_ERR, 'missing config file');
   exit(1);
 }
 
@@ -18,7 +18,7 @@ if (empty($token) ||
   empty($organization) ||
   empty($application) ||
   empty($timeout)) {
-    error_log('missing config value');
+    syslog(LOG_ERR, 'missing config value');
     exit(1);
 }
 
