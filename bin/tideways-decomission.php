@@ -54,8 +54,8 @@ if (0 == count($servers)) {
 $expiary = strtotime("-{$timeout} days");
 $expired = array();
 foreach ($servers as $server) {
-  if {false == is_object($server) ||
-    false == property_exists($server, 'last_sync' ||
+  if (false == is_object($server) ||
+    false == property_exists($server, 'last_sync') ||
     false == property_exists($server, 'server')) {
       syslog(LOG_ERR, 'remote returned invalid value in JSON for expired servers');
       exit(1);
