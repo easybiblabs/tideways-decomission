@@ -22,11 +22,16 @@ if (empty($token) ||
     exit(1);
 }
 
+if (false == is_array($applicatons)) {
+  $applicatons = explode(',', $applications);
+}
+
 date_default_timezone_set('UTC');
 
 $exitCode = 0;
 
 foreach ($applicatons as $application) {
+  $application = trim($application);
   $apiUrl  = "https://app.tideways.io/apps/api/{$organization}/{$application}/servers";
 
   # get list of servers
