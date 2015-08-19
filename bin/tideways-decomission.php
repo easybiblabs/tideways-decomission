@@ -9,10 +9,10 @@ if (is_readable($deployConfigFile)) {
   exit(1);
 }
 
-$token         = $deployConfig['settings']['TOKEN'];
-$organizations = $deployConfig['settings']['ORGANIZATION'];
-$application   = $deployConfig['settings']['APPLICATION'];
-$timeout       = $deployConfig['settings']['TIMEOUT_DAYS'];
+$token        = $deployConfig['settings']['TOKEN'];
+$organization = $deployConfig['settings']['ORGANIZATION'];
+$applications = $deployConfig['settings']['APPLICATIONS'];
+$timeout      = $deployConfig['settings']['TIMEOUT_DAYS'];
 
 if (empty($token) ||
   empty($organization) ||
