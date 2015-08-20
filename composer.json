@@ -10,5 +10,6 @@
     "license": "BSD-2-Clause",
     "require": {
         "php": ">=5.3.3"
-    }
+    },
+    "bin": ["bin/tideways-decomission.php"]
 }
