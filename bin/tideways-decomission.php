@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-$deployConfigFile = dirname(__DIR__) . '/.deploy_configuration.php';
+$deployConfigFile = dirname(__DIR__) . '/../../../.deploy_configuration.php';
 if (is_readable($deployConfigFile)) {
   $deployConfig = require $deployConfigFile;
 } else {
@@ -9,10 +9,10 @@ if (is_readable($deployConfigFile)) {
   exit(1);
 }
 
-$token        = $deployConfig['settings']['TOKEN'];
-$organization = $deployConfig['settings']['ORGANIZATION'];
-$applications = $deployConfig['settings']['APPLICATIONS'];
-$timeout      = $deployConfig['settings']['TIMEOUT_DAYS'];
+$token        = $deployConfig['settings']['TIDEWAYS_TOKEN'];
+$organization = $deployConfig['settings']['TIDEWAYS_ORGANIZATION'];
+$applications = $deployConfig['settings']['TIDEWAYS_APPLICATIONS'];
+$timeout      = $deployConfig['settings']['TIDEWAYS_TIMEOUT_DAYS'];
 
 if (empty($token) ||
   empty($organization) ||
@@ -22,15 +22,15 @@ if (empty($token) ||
     exit(1);
 }
 
-if (false == is_array($applicatons)) {
-  $applicatons = explode(',', $applications);
+if (false == is_array($applications)) {
+  $applications = explode(',', $applications);
 }
 
 date_default_timezone_set('UTC');
 
 $exitCode = 0;
 
-foreach ($applicatons as $application) {
+foreach ($applications as $application) {
   $application = trim($application);
   $apiUrl  = "https://app.tideways.io/apps/api/{$organization}/{$application}/servers";
 
@@ -86,7 +86,8 @@ foreach ($applicatons as $application) {
   $opts = array(
     'http'=>array(
       'method'  => 'DELETE',
-      'header'  => "Authorization: Bearer {$token}\r\n",
+      'header'  => "Authorization: Bearer {$token}\r\n" .
+        "Content-type: application/x-www-form-urlencoded\r\n",
       'content' => $postdata
     )
   );
