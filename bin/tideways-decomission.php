@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-$deployConfigFile = dirname(__DIR__) . '/.deploy_configuration.php';
+$deployConfigFile = dirname(__DIR__) . '/../../../.deploy_configuration.php';
 if (is_readable($deployConfigFile)) {
   $deployConfig = require $deployConfigFile;
 } else {
