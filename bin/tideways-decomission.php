@@ -86,7 +86,8 @@ foreach ($applicatons as $application) {
   $opts = array(
     'http'=>array(
       'method'  => 'DELETE',
-      'header'  => "Authorization: Bearer {$token}\r\n",
+      'header'  => "Authorization: Bearer {$token}\r\n" .
+        "Content-type: application/x-www-form-urlencoded\r\n",
       'content' => $postdata
     )
   );
