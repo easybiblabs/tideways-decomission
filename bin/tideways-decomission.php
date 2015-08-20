@@ -9,10 +9,10 @@ if (is_readable($deployConfigFile)) {
   exit(1);
 }
 
-$token        = $deployConfig['settings']['TOKEN'];
-$organization = $deployConfig['settings']['ORGANIZATION'];
-$applications = $deployConfig['settings']['APPLICATIONS'];
-$timeout      = $deployConfig['settings']['TIMEOUT_DAYS'];
+$token        = $deployConfig['settings']['TIDEWAYS_TOKEN'];
+$organization = $deployConfig['settings']['TIDEWAYS_ORGANIZATION'];
+$applications = $deployConfig['settings']['TIDEWAYS_APPLICATIONS'];
+$timeout      = $deployConfig['settings']['TIDEWAYS_TIMEOUT_DAYS'];
 
 if (empty($token) ||
   empty($organization) ||
