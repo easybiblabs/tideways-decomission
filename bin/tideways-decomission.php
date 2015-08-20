@@ -22,8 +22,8 @@ if (empty($token) ||
     exit(1);
 }
 
-if (false == is_array($applicatons)) {
-  $applicatons = explode(',', $applications);
+if (false == is_array($applications)) {
+  $applications = explode(',', $applications);
 }
 
 date_default_timezone_set('UTC');
