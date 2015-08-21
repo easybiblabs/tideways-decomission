@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+date_default_timezone_set('UTC');
+
 $deployConfigFile = dirname(__DIR__) . '/../../../.deploy_configuration.php';
 if (is_readable($deployConfigFile)) {
   $deployConfig = require $deployConfigFile;
@@ -11,37 +13,55 @@ if (is_readable($deployConfigFile)) {
 
 $token        = $deployConfig['settings']['TIDEWAYS_TOKEN'];
 $organization = $deployConfig['settings']['TIDEWAYS_ORGANIZATION'];
-$applications = $deployConfig['settings']['TIDEWAYS_APPLICATIONS'];
 $timeout      = $deployConfig['settings']['TIDEWAYS_TIMEOUT_DAYS'];
 
 if (empty($token) ||
   empty($organization) ||
-  empty($applications) ||
   empty($timeout)) {
     syslog(LOG_ERR, 'missing config value');
     exit(1);
 }
 
-if (false == is_array($applications)) {
-  $applications = explode(',', $applications);
-}
+# setup context for all GET requests
+$opts = array(
+  'http'=>array(
+    'method'  => 'GET',
+    'header'  => "Authorization: Bearer {$token}\r\n"
+  )
+);
+$context = stream_context_create($opts);
 
-date_default_timezone_set('UTC');
+# get list of applications
+$apiUrl  = "https://app.tideways.io/apps/api/{$organization}/applications";
+$result  = file_get_contents($apiUrl, false, $context);
+if (false === $result) {
+  syslog(LOG_ERR, "failed to GET remote applications list for {$organization}");
+  exit(1);
+}
+$applications = json_decode($result);
+if (JSON_ERROR_NONE != json_last_error() || 
+  false == is_array($applications)) {
+    syslog(LOG_ERR, "remote returned invalid JSON for GET applications list for {$organization}");
+    exit(1);
+}
+if (0 == count($applications)) {
+  syslog(LOG_INFO, "no apps found for {$organization}");
+  exit(0);
+}
 
 $exitCode = 0;
 
-foreach ($applications as $application) {
-  $application = trim($application);
+foreach ($applications as $app) {
+  if (false == is_object($app) ||
+    false == property_exists($app, 'name')) {
+      syslog(LOG_ERR, "remote returned invalid value in JSON for application for {$organization}");
+      $exitCode = 1;
+      continue;
+  }
+  $application = $app->name;
   $apiUrl  = "https://app.tideways.io/apps/api/{$organization}/{$application}/servers";
 
   # get list of servers
-  $opts = array(
-    'http'=>array(
-      'method'  => 'GET',
-      'header'  => "Authorization: Bearer {$token}\r\n"
-    )
-  );
-  $context = stream_context_create($opts);
   $result  = file_get_contents($apiUrl, false, $context);
   if (false === $result) {
     syslog(LOG_ERR, "failed to GET remote server list for {$application}");
