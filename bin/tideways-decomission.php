@@ -29,11 +29,11 @@ $opts = array(
     'header'  => "Authorization: Bearer {$token}\r\n"
   )
 );
-$context = stream_context_create($opts);
+$getContext = stream_context_create($opts);
 
 # get list of applications
 $apiUrl  = "https://app.tideways.io/apps/api/{$organization}/applications";
-$result  = file_get_contents($apiUrl, false, $context);
+$result  = file_get_contents($apiUrl, false, $getContext);
 if (false === $result) {
   syslog(LOG_ERR, "failed to GET remote applications list for {$organization}");
   exit(1);
@@ -62,7 +62,7 @@ foreach ($applications as $app) {
   $apiUrl  = "https://app.tideways.io/apps/api/{$organization}/{$application}/servers";
 
   # get list of servers
-  $result  = file_get_contents($apiUrl, false, $context);
+  $result  = file_get_contents($apiUrl, false, $getContext);
   if (false === $result) {
     syslog(LOG_ERR, "failed to GET remote server list for {$application}");
     $exitCode = 1;
