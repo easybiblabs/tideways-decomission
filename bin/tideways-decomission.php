@@ -11,16 +11,19 @@ if (is_readable($deployConfigFile)) {
   exit(1);
 }
 
+$keys = ['TIDEWAYS_TOKEN', 'TIDEWAYS_ORGANIZATION', 'TIDEWAYS_TIMEOUT_DAYS'];
+foreach ($keys as $key) {
+    if (!array_key_exists($key, $deployConfig['settings']) ||
+        empty($deployConfig['settings'][$key])
+    ) {
+        syslog(LOG_ERR, 'missing config value : '.$key);
+        exit(1);
+    }
+}
+
 $token        = $deployConfig['settings']['TIDEWAYS_TOKEN'];
 $organization = $deployConfig['settings']['TIDEWAYS_ORGANIZATION'];
 $timeout      = $deployConfig['settings']['TIDEWAYS_TIMEOUT_DAYS'];
-
-if (empty($token) ||
-  empty($organization) ||
-  empty($timeout)) {
-    syslog(LOG_ERR, 'missing config value');
-    exit(1);
-}
 
 # setup context for all GET requests
 $opts = array(
