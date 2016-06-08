@@ -7,7 +7,7 @@
             "email": "flame.herbohn@imagineeasy.com"
         }
     ],
-    "license": "BSD-2-Clause",
+    "license": "Apache-2.0",
     "require": {
         "php": ">=5.3.3"
     },
